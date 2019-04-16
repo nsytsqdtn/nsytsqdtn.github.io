@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Solar System Demo</title>
+    <script src="../../import/three.js"></script>
+    <script src="../../import/stats.js"></script>
+    <script src="../../import/Setting.js"></script>
+    <script src="../../import/OrbitControls.js"></script>
+    <style type="text/css">
+        div#canvas-frame {
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            height: 800px;
+            background-color: #333333;
+        }
+    </style>
+</head>
+<body onload="threeStart()">
+<script>
+    let renderer;
+    let camera;
+    function initThree() {
+        renderer = new THREE.WebGLRenderer({
+            antialias : true
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);//设置渲染的宽度和高度
+        document.getElementById("canvas-frame").appendChild(renderer.domElement);
+        renderer.setClearColor(0x333333, 1.0);
+
+    }
+    function initCamera() {
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 1, 10000);
+        camera.position.x = 0;
+        camera.position.y = 500;
+        camera.position.z = 2000;
+        camera.up.x = 0;
+        camera.up.y = 1;
+        camera.up.z = 0;
+        camera.lookAt(0,0,0);
+    }
+
+    let scene;
+    function initScene() {
+        scene = new  THREE.Scene();
+        let backTexture = new THREE.TextureLoader().load("image/universe.jpg");//背景贴图
+        scene.background = backTexture;//把场景的背景设置为一张图片
+    }
+    let light;
+    function initLight() {
+        light = new THREE.PointLight(0xffffff,1);//点光源，模拟太阳
+        light.position.set(0,0,0);
+        scene.add(light);
+        light = new THREE.AmbientLight(0xffffff,0.3);//环境光
+        scene.add(light);
+    }
+    let sun;
+    let earth;
+    let tuxing;
+    let shuixing;
+    let jinxing;
+    let huoxing;
+    let muxing;
+    let tianwangxing;
+    let haiwangxing;
+    
+    function initObject() {
+        let geometry = new THREE.SphereGeometry(15, 50, 50);
+        let texture = THREE.ImageUtils.loadTexture("image/shuixing.jpg");//定义一个贴图，并从本地文件中加载
+        let material = new THREE.MeshBasicMaterial({map:texture});//把上面定义的texture设置为星球的纹理材质
+        shuixing = new THREE.Mesh(geometry,material);
+        shuixing.position.set(0,0,150);//3
+        scene.add(shuixing);
+
+        geometry = new THREE.SphereGeometry(25, 50, 50);
+        texture = THREE.ImageUtils.loadTexture("image/jinxing.jpg");
+        material = new THREE.MeshBasicMaterial({map:texture});
+        jinxing = new THREE.Mesh(geometry,material);
+        jinxing.position.set(0,0,200);//4
+        scene.add(jinxing);
+
+        geometry = new THREE.SphereGeometry(30, 50, 50);
+        texture = THREE.ImageUtils.loadTexture("Image/earth.jpg");
+        material = new THREE.MeshBasicMaterial({map:texture});
+        earth = new THREE.Mesh(geometry,material);
+        earth.position.set(0,0,300);//6
+        scene.add(earth);
+
+        geometry = new THREE.SphereGeometry(20, 50, 50);
+        texture = THREE.ImageUtils.loadTexture("image/huoxing.jpg");
+        material = new THREE.MeshBasicMaterial({map:texture});
+        huoxing = new THREE.Mesh(geometry,material);
+        huoxing.position.set(0,0,400);//8
+        scene.add(huoxing);
+
+        geometry = new THREE.SphereGeometry(65, 50, 50);
+        texture = THREE.ImageUtils.loadTexture("image/muxing.jpg");
+        material = new THREE.MeshBasicMaterial({map:texture});
+        muxing = new THREE.Mesh(geometry,material);
+        muxing.position.set(0,0,600);//500 12
+        scene.add(muxing);
+        geometry = new THREE.TorusGeometry(80,6,20,20);
+        texture = THREE.ImageUtils.loadTexture("image/muxinghuan.jpg");
+        material = new THREE.MeshBasicMaterial({map:texture});
+        let muxinghuan = new THREE.Mesh(geometry,material);
+        muxinghuan.rotation.x = 1.4;//木星环
+        muxing.add(muxinghuan);
+
+        geometry = new THREE.SphereGeometry(55, 50, 50);
+        texture = THREE.ImageUtils.loadTexture("image/tuxing.jpg");
+        material = new THREE.MeshBasicMaterial({map:texture});
+        tuxing = new THREE.Mesh(geometry,material);
+        tuxing.position.set(0,0,800);//16
+        scene.add(tuxing);
+        geometry = new THREE.TorusGeometry(65,8,20,20);
+        texture = THREE.ImageUtils.loadTexture("image/tuxinghuan.jpg");
+        material = new THREE.MeshBasicMaterial({map:texture});
+        let tuxinghuan = new THREE.Mesh(geometry,material);
+        tuxinghuan.rotation.x = 1.4;
+        tuxing.add(tuxinghuan);
+
+        geometry = new THREE.SphereGeometry(45, 50, 50);
+        texture = THREE.ImageUtils.loadTexture("image/tianwangxing.jpg");
+        material = new THREE.MeshBasicMaterial({map:texture});
+        tianwangxing = new THREE.Mesh(geometry,material);
+        tianwangxing.position.set(0,0,950);//19
+        scene.add(tianwangxing);
+
+        geometry = new THREE.SphereGeometry(40, 50, 50);
+        texture = THREE.ImageUtils.loadTexture("image/haiwangxing.jpg");
+        material = new THREE.MeshBasicMaterial({map:texture});
+        haiwangxing = new THREE.Mesh(geometry,material);
+        haiwangxing.position.set(0,0,1100);//22
+        scene.add(haiwangxing);
+
+        geometry = new THREE.SphereGeometry(120, 50, 50);
+        texture = THREE.ImageUtils.loadTexture("image/sun.jpg");
+        material = new THREE.MeshBasicMaterial({map:texture,
+            emissive: 0xffffff,side: THREE.DoubleSide,});
+        sun = new THREE.Mesh(geometry,material);
+        sun.position.set(0,0,0);
+        scene.add(sun);
+
+        //在太阳外面设置一层透明的罩，看上去更像太阳
+        let canvas = document.createElement( 'canvas' );
+        canvas.width = 256;
+        canvas.height = 256;
+        let context = canvas.getContext( '2d' );
+        let gradient = context.createRadialGradient( canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width / 2 );//创建一个圆形渐变对象
+        gradient.addColorStop( 0.1, 'rgba(255,60,0,0.01)' );//内圈的颜色
+        gradient.addColorStop( 1, 'rgba(255,125,0,0.5)' );//最外面的颜色
+        context.fillStyle = gradient;
+        context.fillRect( 0, 0, canvas.width, canvas.height );//将一个画布使用圆形渐变对象进行填充
+        let shadowTexture = new THREE.CanvasTexture( canvas );//把刚刚画好的画布拿来作为画布贴图
+        let shadowMaterial = new THREE.MeshBasicMaterial( { map: shadowTexture,transparent:true } );//用此贴图来当材质
+        let shadowGeo = new THREE.SphereGeometry( 130,50,50);
+        let shadowMesh;
+        shadowMesh = new THREE.Mesh( shadowGeo, shadowMaterial );
+        shadowMesh.position.y = 0;
+        shadowMesh.position.x = 0;
+        sun.add( shadowMesh );
+
+        //画线，把太阳系每个星球运行轨迹画出来
+        for(let j=3;j<=22;j++) {
+            if (j==3||j==4||j==6||j==8||j==12||j==16||j==19||j==22){
+                let radius = 50 * j;
+                let lineGeometry2 = new THREE.Geometry();
+                for (let i = 0; i <= 2 * Math.PI; i += Math.PI / 30) {
+                    lineGeometry2.vertices.push(new THREE.Vector3(radius * Math.cos(i), 0, radius * Math.sin(i), 0))
+                }
+                let material2 = new THREE.LineBasicMaterial({color: 0x8f6cab})
+                let cycleMesh = new THREE.Line(lineGeometry2, material2);
+                cycleMesh.position.set(0, 0, 0);
+                scene.add(cycleMesh);
+            }
+            }
+    }
+    //每个星球的自转函数
+    function zizhuan() {
+        sun.rotation.y = sun.rotation.y+0.008>=2*Math.PI?0:sun.rotation.y+0.008;
+        shuixing.rotation.y = shuixing.rotation.y+0.005>=2*Math.PI?0:shuixing.rotation.y+0.005;
+        jinxing.rotation.y = jinxing.rotation.y+0.003>=0?2*Math.PI:jinxing.rotation.y+0.003;
+        earth.rotation.y = earth.rotation.y+0.012>=2*Math.PI?0:earth.rotation.y+0.012;
+        huoxing.rotation.y = huoxing.rotation.y+0.01>=2*Math.PI?0:huoxing.rotation.y+0.01;
+        tuxing.rotation.y = tuxing.rotation.y+0.04>=2*Math.PI?0:tuxing.rotation.y+0.06;
+        muxing.rotation.y = muxing.rotation.y+0.03>=2*Math.PI?0:muxing.rotation.y+0.08;
+        tianwangxing.rotation.z = tianwangxing.rotation.z+0.015>=2*Math.PI?0:tianwangxing.rotation.z+0.015;
+        haiwangxing.rotation.y = haiwangxing.rotation.y+0.02>=2*Math.PI?0:haiwangxing.rotation.y+0.02;
+    }
+
+    let shuixingAngle = 0;
+    let jinxingAngle = 0;
+    let earthAngle = 0;
+    let huoxingAngle = 0;
+    let tuxingAngle = 0;
+    let muxingAngle = 0;
+    let tianwangxingAngle = 0;
+    let haiwangxingAngle = 0;
+    //每个星球的公转函数
+    function gongzhuan() {
+        shuixingAngle = shuixingAngle+0.03>=2*Math.PI?0:shuixingAngle +0.03;
+        shuixing.position.set(150*Math.sin(shuixingAngle)
+            ,0,150*Math.cos(shuixingAngle));
+
+        jinxingAngle = jinxingAngle-0.02>=0?2*Math.PI:jinxingAngle -0.02;
+        jinxing.position.set(200*Math.sin(jinxingAngle)
+            ,0,200*Math.cos(jinxingAngle));
+
+        earthAngle = earthAngle+0.015>=2*Math.PI?0:earthAngle +0.015;
+        earth.position.set(300*Math.sin(earthAngle)
+            ,0,300*Math.cos(earthAngle));
+
+        huoxingAngle = huoxingAngle+0.01>=2*Math.PI?0:huoxingAngle +0.01;
+        huoxing.position.set(400*Math.sin(huoxingAngle)
+            ,0,400*Math.cos(huoxingAngle));
+
+        muxingAngle = muxingAngle+0.006>=2*Math.PI?0:muxingAngle +0.006;
+        muxing.position.set(600*Math.sin(muxingAngle)
+            ,0,600*Math.cos(muxingAngle));
+
+        tuxingAngle = tuxingAngle+0.004>=2*Math.PI?0:tuxingAngle +0.004;
+        tuxing.position.set(800*Math.sin(tuxingAngle)
+            ,0,800*Math.cos(tuxingAngle));
+
+        tianwangxingAngle = tianwangxingAngle+0.003>=2*Math.PI?0:tianwangxingAngle +0.003;
+        tianwangxing.position.set(950*Math.sin(tianwangxingAngle)
+            ,0,950*Math.cos(tianwangxingAngle));
+
+        haiwangxingAngle = haiwangxingAngle+0.002>=2*Math.PI?0:haiwangxingAngle +0.002;
+        haiwangxing.position.set(1100*Math.sin(haiwangxingAngle)
+            ,0,1100*Math.cos(haiwangxingAngle));
+    }
+    function initSetting() {
+        loadAutoScreen(camera,renderer);
+        loadFullScreen();
+        loadStats();
+    }
+    let controller;
+    function threeStart() {
+        initThree();
+        initCamera();
+        initScene();
+        initLight();
+        initObject();
+        initSetting();
+        controller = new THREE.OrbitControls(camera,renderer.domElement);
+        controller.target = new THREE.Vector3(0,0,0);
+        controller.autoRotate = true;
+        animation();
+    }
+    function animation() {
+        zizhuan();
+        gongzhuan();
+        renderer.clear();
+        renderer.render(scene,camera);
+        requestAnimationFrame(animation);
+        stats.update();
+    }
+
+</script>
+<div id="canvas-frame"></div>
+</body>
+</html>

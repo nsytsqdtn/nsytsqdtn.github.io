@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vertices For Geometry</title>
+    <script src="../../import/three.js"></script>
+    <script src="../../import/stats.js"></script>
+    <script src="../../import/Setting.js"></script>
+    <script src="../../import/OrbitControls.js"></script>
+    <script src="../../import/dat.gui.min.js"></script>
+    <script src="../../import/SceneUtils.js"></script>
+    <style type="text/css">
+        div#canvas-frame {
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            height: 850px;
+            background-color: #333333;
+        }
+    </style>
+</head>
+<body onload="threeStart()">
+<div id="canvas-frame"></div>
+<script>
+    let renderer, camera, scene;
+    let controller;
+    let controls;
+    let vertices;
+    let faces;
+    let controlPoints = [];
+    let geom;
+    let mesh;
+
+    //初始化渲染器
+    function initThree() {
+        renderer = new THREE.WebGLRenderer({
+            antialias: true
+        });//定义渲染器
+        renderer.setSize(window.innerWidth, window.innerHeight);//设置渲染的宽度和高度
+        document.getElementById("canvas-frame").appendChild(renderer.domElement);//将渲染器加在html中的div里面
+        renderer.setClearColor(0x333333, 1.0);//渲染的颜色设置
+        renderer.shadowMapEnabled = true;//开启阴影，默认是关闭的，太影响性能
+        renderer.shadowMapType = THREE.PCFSoftShadowMap;//阴影的一个类型
+
+
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);//perspective是透视摄像机，这种摄像机看上去画面有3D效果
+
+        //摄像机的位置
+        camera.position.x = 10;
+        camera.position.y = 15;
+        camera.position.z = 15;
+        camera.up.x = 0;
+        camera.up.y = 1;//摄像机的上方向是Y轴
+        camera.up.z = 0;
+        camera.lookAt(0, 0, 0);//摄像机对焦的位置
+        //这三个参数共同作用才能决定画面
+
+        scene = new THREE.Scene();
+
+        let light = new THREE.SpotLight(0xffffff, 1.0, 0);//点光源
+        light.position.set(-40, 60, -10);
+        light.castShadow = true;//开启阴影
+        light.shadowMapWidth = 8192;//阴影的分辨率，可以不设置对比看效果
+        light.shadowMapHeight = 8192;
+        scene.add(light);
+        light = new THREE.AmbientLight(0xcccccc, 0.2);//环境光，如果不加，点光源照不到的地方就完全是黑色的
+        scene.add(light);
+
+        cameraControl();
+
+         vertices = [
+            new THREE.Vector3(1, 3, 1),
+            new THREE.Vector3(1, 3, -1),
+            new THREE.Vector3(1, -1, 1),
+            new THREE.Vector3(1, -1, -1),
+            new THREE.Vector3(-1, 3, -1),
+            new THREE.Vector3(-1, 3, 1),
+            new THREE.Vector3(-1, -1, -1),
+            new THREE.Vector3(-1, -1, 1)
+        ];//顶点坐标，一共8个顶点
+
+         faces = [
+             new THREE.Face3(0, 2, 1),
+             new THREE.Face3(2, 3, 1),
+             new THREE.Face3(4, 6, 5),
+             new THREE.Face3(6, 7, 5),
+             new THREE.Face3(4, 5, 1),
+             new THREE.Face3(5, 0, 1),
+             new THREE.Face3(7, 6, 2),
+             new THREE.Face3(6, 3, 2),
+             new THREE.Face3(5, 7, 0),
+             new THREE.Face3(7, 2, 0),
+             new THREE.Face3(1, 3, 4),
+             new THREE.Face3(3, 6, 4),
+        ];//顶点索引，每一个面都会根据顶点索引的顺序去绘制线条
+
+        geom = new THREE.Geometry();
+        geom.vertices = vertices;
+        geom.faces = faces;
+        geom.computeFaceNormals();//计算法向量，会对光照产生影响
+
+        //两个材质放在一起使用
+        let materials = [
+            new THREE.MeshLambertMaterial({opacity: 0.6, color: 0x44ff44, transparent: true}),//透明度更改
+            new THREE.MeshBasicMaterial({color: 0x000000, wireframe: true})//线条材质，让观察更直观一点
+
+        ];
+        //创建多材质对象，要引入SceneUtils.js文件，如果只有一个材质就不需要这个函数
+        mesh = THREE.SceneUtils.createMultiMaterialObject(geom, materials);
+        mesh.children.forEach(function (e) {
+            e.castShadow = true
+        });
+        scene.add(mesh);
+
+        initDat();
+    }
+   //可视化面板
+    function initDat() {
+        function addControl(x, y, z) {
+            controls = new function () {
+                this.x = x;
+                this.y = y;
+                this.z = z;
+            };
+            return controls;
+        }
+        controlPoints.push(addControl(3, 5, 3));
+        controlPoints.push(addControl(3, 5, 0));
+        controlPoints.push(addControl(3, 0, 3));
+        controlPoints.push(addControl(3, 0, 0));
+        controlPoints.push(addControl(0, 5, 0));
+        controlPoints.push(addControl(0, 5, 3));
+        controlPoints.push(addControl(0, 0, 0));
+        controlPoints.push(addControl(0, 0, 3));
+
+        //克隆一个几何体
+        let addClone = new function () {
+            this.clone = function () {
+
+                let clonedGeometry = mesh.children[0].geometry.clone();
+                let materials = [
+                    new THREE.MeshLambertMaterial({opacity: 0.6, color: 0xff44ff, transparent: true}),
+                    new THREE.MeshBasicMaterial({color: 0x000000, wireframe: true})
+
+                ];
+
+                let mesh2 = THREE.SceneUtils.createMultiMaterialObject(clonedGeometry, materials);
+                mesh2.children.forEach(function (e) {
+                    e.castShadow = true
+                });
+
+                mesh2.translateX(Math.random()*4+3);
+                mesh2.translateZ(Math.random()*4+3);
+                mesh2.name = "clone";
+                //删掉场景中已经存在的克隆体，再重新创建一个
+                scene.remove(scene.getChildByName("clone"));
+                scene.add(mesh2);
+
+
+            }
+        };
+
+        let gui = new dat.GUI();
+
+        gui.add(addClone, 'clone');
+
+        for (let i = 0; i < 8; i++) {
+            let f1 = gui.addFolder('Vertices ' + (i + 1));//把每个顶点的三个坐标都收拢在一个Folder里面，更加美观方便
+            f1.add(controlPoints[i], 'x', -10, 10);
+            f1.add(controlPoints[i], 'y', -10, 10);
+            f1.add(controlPoints[i], 'z', -10, 10);
+
+        }
+    }
+
+   // 摄像机的控制，可以采用鼠标拖动来控制视野
+    function cameraControl() {
+        controller = new THREE.OrbitControls(camera, renderer.domElement);
+        controller.target = new THREE.Vector3(0, 0, 0);
+    }
+
+    let plane;
+
+    //初始化物体
+    function initObject() {
+        //定义了一个地面
+        let planeGeometry = new THREE.PlaneGeometry(100, 100, 1, 1);
+        let planeMaterial = new THREE.MeshLambertMaterial({
+            color: 0xffffff,
+        });
+        plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.rotation.x = -0.5 * Math.PI;
+        plane.position.x = 15;
+        plane.receiveShadow = true;//开启地面的接收阴影
+        scene.add(plane);//添加到场景中
+        // initCustomObj();
+    }
+
+    //定义的一个功能文件
+    function initSetting() {
+        loadAutoScreen(camera, renderer);
+        loadFullScreen();
+        loadStats();
+    }
+
+    //动画
+    function render() {
+        stats.update();
+
+        // for (let i = 0; i < 8; i++) {
+        //     console.log(mesh);
+        //     mesh.geometry.vertices[i].set(controlPoints[i].x, controlPoints[i].y, controlPoints[i].z);
+        //     mesh.geometry.verticesNeedUpdate = true;
+        //     mesh.geometry.computeFaceNormals();
+        // }
+        let vertices = [];
+        for (let i = 0; i < 8; i++) {
+            vertices.push(new THREE.Vector3(controlPoints[i].x, controlPoints[i].y, controlPoints[i].z));
+        }
+        mesh.children.forEach(function (e) {
+            e.geometry.vertices = vertices;
+            e.geometry.verticesNeedUpdate = true;//通知顶点更新
+            e.geometry.elementsNeedUpdate = true;//特别重要，通知线条连接方式更新
+            e.geometry.computeFaceNormals();
+        });
+
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+    }
+    //主函数
+    function threeStart() {
+        initThree();
+        initObject();
+        initSetting();
+        render();
+    }
+</script>
+</body>
+</html>
