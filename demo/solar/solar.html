@@ -81,7 +81,7 @@
         scene.add(jinxing);
 
         geometry = new THREE.SphereGeometry(30, 50, 50);
-        texture = THREE.ImageUtils.loadTexture("Image/earth.jpg");
+        texture = THREE.ImageUtils.loadTexture("image/earth.jpg");
         material = new THREE.MeshBasicMaterial({map:texture});
         earth = new THREE.Mesh(geometry,material);
         earth.position.set(0,0,300);//6
