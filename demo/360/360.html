@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Depth Material Test</title>
+    <script src="../../Import/three.js"></script>
+    <script src="../../Import/stats.js"></script>
+    <script src="../../Import/Setting.js"></script>
+    <script src="../../Import/OrbitControls.js"></script>
+    <script src="../../Import/dat.gui.min.js"></script>
+    <script src="../../Import/SceneUtils.js"></script>
+    <style type="text/css">
+        div#WebGL-output {
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            height: 850px;
+            background-color: #333333;
+        }
+    </style>
+</head>
+<body onload="Start()">
+<div id="WebGL-output"></div>
+<script>
+    let camera, renderer, scene, light;
+    let controller;
+    let controls;
+    let cube, sphere, plane, meshMaterial;
+
+    function initThree() {
+        //渲染器初始化
+        renderer = new THREE.WebGLRenderer({
+            antialias: true
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x333333);
+        document.getElementById("WebGL-output").appendChild(renderer.domElement);//将渲染添加到div中
+
+        //初始化摄像机，这里使用透视投影摄像机
+        camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 10, 100);
+        camera.position.set(0, 40, 60);
+        camera.up.x = 0;//设置摄像机的上方向为哪个方向，这里定义摄像的上方为Y轴正方向
+        camera.up.y = 1;
+        camera.up.z = 0;
+        camera.lookAt(0, 0, 0);
+
+        //初始化场景
+        var urls =[
+            'image/posx.jpg',
+            'image/negx.jpg',
+            'image/posy.jpg',
+            'image/negy.jpg',
+            'image/posz.jpg',
+            'image/negz.jpg'
+        ];//引入6个方向的贴图
+        let cubeMap = THREE.ImageUtils.loadTextureCube( urls );
+        scene = new  THREE.Scene();
+        scene.background = cubeMap;
+
+        //相机的移动
+        controller = new THREE.OrbitControls(camera, renderer.domElement);
+        controller.target = new THREE.Vector3(0, 0, 0);
+
+
+        light = new THREE.AmbientLight(0x0c0c0c);
+        scene.add(light);
+
+        // add spotlight for the shadows
+        light = new THREE.SpotLight(0xffffff);
+        light.position.set(0, 30, 30);
+        scene.add(light);
+
+    }
+
+    //初始化菜单面板
+    function initDatGUI() {
+        //设置菜单中需要的参数
+        controls = new function () {
+            this.rotationSpeed = 0.02;
+            this.visible = meshMaterial.visible;//是否可见
+            this.wireframe = meshMaterial.wireframe;//是否以线框的方式渲染物体
+            this.wireframeWidth = meshMaterial.wireframeLinewidth;//线框的宽度
+            this.transparent = meshMaterial.transparent;//是否透明
+            this.opacity = meshMaterial.opacity;//透明度，需要transparent为true才有效果
+            this.side = "front";//边的渲染方式，有三种，前面，后面，还有双面
+            this.selectMesh = "sphere";//当前选择的几何体
+            this.shading = "smooth";//着色方式，有平面着色和平滑着色，对一个面很平的几何体几乎看不出区别，如正方体
+        };
+        let gui = new dat.GUI();
+        //将刚刚设置的参数添加到菜单中
+        let F1 = gui.addFolder("Mesh");
+        F1.add(controls, "rotationSpeed", 0, 0.1);
+        F1.add(controls, "visible").onChange(function (e) {
+            meshMaterial.visible = e;
+        });
+        F1.add(controls, "wireframe").onChange(function (e) {
+            meshMaterial.wireframe = e;
+        });
+        F1.add(controls, "wireframeWidth",0,10).onChange(function (e) {
+            meshMaterial.wireframeWidth = e;
+        });
+        F1.add(controls, "transparent").onChange(function (e) {
+            meshMaterial.transparent = e;
+        });
+        F1.add(controls, "opacity",0,1).onChange(function (e) {
+            meshMaterial.opacity = e;
+        });
+        F1.add(controls, "side",["front","back","double"]).onChange(function (e) {
+            switch (e) {
+                case "front":
+                    meshMaterial.side = THREE.FrontSide;
+                    break;
+                case "back":
+                    meshMaterial.side = THREE.BackSide;
+                    break;
+                case "double":
+                    meshMaterial.side = THREE.DoubleSide;
+                    break;
+            }
+            meshMaterial.needsUpdate = true;//要在程序中让材质更新需要添加这一句话
+        });
+        F1.add(controls, "selectMesh",["sphere","cube","plane"]).onChange(function (e) {
+            //先把场景的物体清除，再来添加
+            scene.remove(cube);
+            scene.remove(sphere);
+            scene.remove(plane);
+            switch (e) {
+                case "sphere":
+                    scene.add(sphere);
+                    break;
+                case "cube":
+                    scene.add(cube);
+                    break;
+                case "plane":
+                    scene.add(plane);
+                    break;
+            }
+        });
+        F1.add(controls, "shading",["flat","smooth"]).onChange(function (e) {
+            switch (e) {
+                case "flat":
+                    meshMaterial.shading = THREE.FlatShading;
+                    break;
+                case "smooth":
+                    meshMaterial.shading = THREE.SmoothShading;
+                    break;
+            }
+            meshMaterial.needsUpdate = true;//要在程序中让材质更新需要添加这一句话
+        });
+    }
+
+    function initObject() {
+        //创建正方体，球和地面的几何体
+        let cubeGeometry = new THREE.BoxGeometry(10, 10, 10);
+        let sphereGeometry = new THREE.SphereGeometry(10, 20, 20);
+        let planeGeometry = new THREE.PlaneGeometry(10, 10, 1, 1);
+        //创建一个法向量材质
+        meshMaterial = new THREE.MeshNormalMaterial();
+
+        cube = new THREE.Mesh(cubeGeometry, meshMaterial);
+        sphere = new THREE.Mesh(sphereGeometry, meshMaterial);
+        plane = new THREE.Mesh(planeGeometry, meshMaterial);
+        //把三者的位置统一
+        cube.position.set(0,0,0);
+        sphere.position = cube.position;
+        plane.position = cube.position;
+
+        //在球的每一个面上显示一个法向量，方便观测这种法向量材质的渲染方式
+        for(let i=0;i<sphereGeometry.faces.length;i++){//在每一个面上面循环
+            let face = sphereGeometry.faces[i];//得到每个面的对象
+            let centroid = new THREE.Vector3();//先创建一个vector3对象，要使用这个对象找到每个面的中心，
+            centroid.add(sphereGeometry.vertices[face.a]);
+            // 将这该面的三个顶点的索引传给sphereGeom.vertices找到其顶点的坐标，再添加进centroid
+            centroid.add(sphereGeometry.vertices[face.b]);
+            centroid.add(sphereGeometry.vertices[face.c]);
+            centroid.divideScalar(3);//三角形的中心点坐标
+            let arrow = new THREE.ArrowHelper(
+                face.normal,
+                centroid,
+                2,
+                0xffcc55,
+                0.5,
+                0.5);//箭头辅助线，相当于把法向量用箭头表示出来
+            sphere.add(arrow);
+        }
+        scene.add(sphere);
+    }
+
+    function rotation() {
+        scene.traverse(function (e) {
+            if (e instanceof THREE.Mesh) {
+                e.rotation.y += controls.rotationSpeed;
+            }
+        })
+    }
+
+    //渲染函数
+    function render() {
+        rotation();
+        stats.update();
+        renderer.clear();
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+    }
+
+    //功能函数
+    function setting() {
+        loadFullScreen();
+        loadAutoScreen(camera, renderer);
+        loadStats();
+    }
+
+    //运行主函数
+    function Start() {
+        initThree();
+        initObject();
+        initDatGUI();
+        setting();
+        render();
+    }
+</script>
+</body>
+</html>
