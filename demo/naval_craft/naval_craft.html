@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Naval Craft Sprite</title>
+    <script src="../../import/three.js"></script>
+    <script src="../../import/stats.js"></script>
+    <script src="../../import/Setting.js"></script>
+    <script src="../../import/OrbitControls.js"></script>
+    <script src="../../import/tween.min.js"></script>
+    <script src="../../import/STLLoader.js"></script>
+    <style type="text/css">
+        div#WebGL-output {
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            height: 850px;
+            background-color: #333333;
+        }
+    </style>
+</head>
+<body onload="threeStart()">
+<div id="WebGL-output"></div>
+<script>
+    let camera, renderer, scene,controller;
+    function initThree() {
+        //渲染器初始化
+        renderer = new THREE.WebGLRenderer({
+            antialias: true//抗锯齿开启
+        });
+        //设置渲染的大小
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        //设置渲染的颜色
+        renderer.setClearColor(0x333333);
+        renderer.shadowMapEnabled = true;//开启阴影的渲染
+        renderer.shadowMapType = THREE.PCFSoftShadowMap;//设置阴影类型为柔和
+        document.getElementById("WebGL-output").appendChild(renderer.domElement);//将渲染添加到div中
+
+        //初始化摄像机，这里使用透视投影摄像机
+        camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 10000);
+        camera.position.set(35, 35, 75);//相机的位置，自由调整
+        camera.up.x = 0;//设置摄像机的上方向为哪个方向，这里定义摄像的上方为Y轴正方向
+        camera.up.y = 1;
+        camera.up.z = 0;
+        //摄像机对准的地方
+        camera.lookAt(0, 0, 0);
+
+        //初始化场景
+        scene = new THREE.Scene();
+
+        //相机的移动
+        controller = new THREE.OrbitControls(camera, renderer.domElement);
+        //相机围绕旋转的目标，设置为原点
+        controller.target = new THREE.Vector3(0, 0, 0);
+
+    }
+
+    let loadGeometry;
+    let group;
+
+    function initObject() {
+        let loader = new THREE.STLLoader();//创建stl的加载器，用加载器来加载stl模型
+        group = new THREE.Object3D();
+        loader.load("../../asset/naval_craft.stl", function (bufferGeometry) {//加载模型的方法，第一个参数是模型的路径，第二个参数时候我们定义的回调函数，一旦模型加载成功，回调函数就会被调用
+            let geometry = new THREE.Geometry().fromBufferGeometry(bufferGeometry);//stl模型加载到js里就会变成bufferGeometry类型，我们先用一个方法把它变成Geometry类型
+            loadGeometry = geometry.clone();//创建该geometry的克隆体，后面会用到
+            let material = new THREE.PointsMaterial({//点云的材质
+                color: 0xffffff,
+                transparent: true,
+                opacity: 1,
+                size: 0.5,//可自由修改看看效果
+                blending: THREE.AdditiveBlending,
+                map: generateSprite()//自定义画布图案来充当每一个粒子的材质
+            });
+            //创建点云，以及设置它的位置及旋转角度，调整到最好看的地方
+            group = new THREE.Points(geometry, material);
+            group.sortParticles = true;
+            group.position.set(0,0,0);
+            group.position.x -=70;
+            group.rotation.x = Math.PI*3/2;
+
+            var posSrc = {pos: 0};//创建一个posSrc的对象，该对象里面有pos的属性，并初始化该属性为0
+            var tween = new TWEEN.Tween(posSrc).to({pos: 1}, 5000);//创建tween的补间动画，使posSrc中的pos属性的值在5000ms内从0到1变化
+            tween.easing(TWEEN.Easing.Sinusoidal.InOut);//配置缓动效果
+            var tweenStand = new TWEEN.Tween(posSrc).to({pos: 1}, 2000);//让动画在pos的值变为1后停止一段时间，方便我们观察，所以再创建一个tween，让pos从1到1（即不变）
+            tween.easing(TWEEN.Easing.Sinusoidal.InOut);//配置缓动效果
+            var tweenBack = new TWEEN.Tween(posSrc).to({pos: 0}, 5000);//创建tweenBack的补间动画，和初始相反，使posSrc中的pos属性的值在5000ms内从1到0变化
+            tweenBack.easing(TWEEN.Easing.Sinusoidal.InOut);//配置缓动效果
+            //每一个补间动画之间使用chain()连接起来
+            tween.chain(tweenStand);
+            tweenStand.chain(tweenBack);
+            tweenBack.chain(tween);
+
+            //在补间的过程中，让所有的粒子开始移动
+            let onUpdate = function () {
+                let pos = posSrc.pos;//定义一个pos，赋值为posSrc对象的pos属性
+                let count = 0;
+                loadGeometry.vertices.forEach(function (e) {//遍历每个顶点，这里需要遍历刚刚克隆的geometry
+                    var newZ = e.z * pos;//得到新的Z值，根据当前的pos值去改变
+                    group.geometry.vertices[count++].set(e.x, e.y, newZ);//设置每个顶点的位置，group.geometry.vertices是数组类型，所以用count作为索引
+                    group.geometry.verticesNeedUpdate = true;//重要，不然会没有动画效果
+                });
+                group.sortParticles = true;
+            };
+            //tween在每次更新后会执行tween.onUpdate()函数，里面的参数就是我们自定义要让它如果去运动的函数，即上面写的onUpdate
+            tween.onUpdate(onUpdate);
+            tweenStand.onUpdate(onUpdate);
+            tweenBack.onUpdate(onUpdate);
+
+            tween.start();//开启tween
+            scene.add(group);
+        });
+    }
+
+    //自定义渐变颜色的画布，前面的文章有介绍，这个方法在写three.js程序很常用
+    function generateSprite() {
+
+        var canvas = document.createElement('canvas');
+        canvas.width = 16;
+        canvas.height = 16;
+
+        var context = canvas.getContext('2d');
+        var gradient = context.createRadialGradient(canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width / 2);
+        gradient.addColorStop(0, 'rgba(255,255,255,1)');
+        gradient.addColorStop(0.2, 'rgba(0,255,255,1)');
+        gradient.addColorStop(0.4, 'rgba(0,0,255,1)');
+        gradient.addColorStop(1, 'rgba(0,0,0,1)');
+
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        var texture = new THREE.Texture(canvas);
+        texture.needsUpdate = true;
+        return texture;
+
+    }
+
+    //渲染函数
+    function render() {
+        TWEEN.update();//通知TWEEN在什么时候去刷新补间动画，重要，否则会没有动画
+        //性能监控器的更新
+        stats.update();
+        renderer.clear();
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+    }
+
+    //功能函数
+    function setting() {
+        loadFullScreen();
+        loadAutoScreen(camera, renderer);
+        loadStats();
+    }
+
+    //运行主函数
+    function threeStart() {
+        initThree();
+        initObject();
+        setting();
+        render();
+    }
+</script>
+</body>
+</html>
