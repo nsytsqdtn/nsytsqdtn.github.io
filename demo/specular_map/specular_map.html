@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="icon" href="../../logo.ico">
+    <title>Specular Map(Earth)</title>
+    <script src="../../import/three.js"></script>
+    <script src="../../import/stats.js"></script>
+    <script src="../../import/Setting.js"></script>
+    <script src="../../import/OrbitControls.js"></script>
+    <style type="text/css">
+        body {
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            height: 1000px;
+            /*全屏显示的设置*/
+            margin: 0;
+            overflow: hidden;/*消除浏览器的滚动条*/
+        }
+        /*加载动画*/
+        #loading {
+            width: 100%;
+            height: 850px;
+            background-color: #333333;
+        }
+        #spinner {
+            width: 100px;
+            height: 100px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+        }
+        .double-bounce1, .double-bounce2 {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #67CF22;
+            opacity: 0.6;
+            position: absolute;
+            top: 0;
+            left: 0;
+            -webkit-animation: bounce 2.0s infinite ease-in-out;
+            animation: bounce 2.0s infinite ease-in-out;
+        }
+
+        .double-bounce2 {
+            -webkit-animation-delay: -1.0s;
+            animation-delay: -1.0s;
+        }
+
+        @-webkit-keyframes bounce {
+            0%, 100% { -webkit-transform: scale(0.0) }
+            50% { -webkit-transform: scale(1.0) }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: scale(0.0);
+                -webkit-transform: scale(0.0);
+            } 50% {
+                  transform: scale(1.0);
+                  -webkit-transform: scale(1.0);
+              }
+        }
+    </style>
+</head>
+<body onload="Start()">
+<!--加载动画的div-->
+<div id="loading">
+    <div id="spinner">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
+<script>
+    let camera, renderer, scene, light;
+    let controller;
+
+    function initThree()
+    {
+        //渲染器初始化
+        renderer = new THREE.WebGLRenderer({
+            antialias: true
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x333333);
+        document.body.appendChild(renderer.domElement);//将渲染添加到div中
+
+        //初始化摄像机，这里使用透视投影摄像机
+        camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 10000);
+        camera.position.set(0, 0, 70);
+        camera.up.x = 0;//设置摄像机的上方向为哪个方向，这里定义摄像的上方为Y轴正方向
+        camera.up.y = 1;
+        camera.up.z = 0;
+        camera.lookAt(0, 0, 0);
+
+        //初始化场景
+        scene = new THREE.Scene();
+        let background = new THREE.TextureLoader().load("image/universe.jpg");
+        scene.background =background;
+        //相机的移动
+        controller = new THREE.OrbitControls(camera, renderer.domElement);
+        controller.target = new THREE.Vector3(0, 0, 0);
+
+        light = new THREE.AmbientLight(0xffffff,0.1);
+        scene.add(light);
+        light = new THREE.DirectionalLight(0xffffff,0.7);
+        light.position.set(300,300,300);
+        scene.add(light);
+
+    }
+
+    let sphere;
+    function initObject()
+    {
+        let map = new THREE.TextureLoader().load("image/Earth.png");
+        let specularMap = new THREE.TextureLoader().load("image/EarthSpec.png");
+        let normalMap = new THREE.TextureLoader().load("image/EarthNormal.png",loaded());
+        let sphereMaterial = new THREE.MeshPhongMaterial({
+            map:map,
+            specularMap:specularMap,
+            normalMap:normalMap,
+            specular:0x0000ff,
+            shininess:2
+        });
+        let sphereGeometry = new THREE.SphereGeometry(30,30,30);
+        sphere = new THREE.Mesh(sphereGeometry,sphereMaterial);
+        scene.add(sphere);
+    }
+    function loaded()
+    {
+        document.getElementById('loading').style.display = 'none';
+    }
+
+    //渲染函数
+    function render()
+    {
+        if(sphere)sphere.rotation.y+=0.002;
+        stats.update();
+        renderer.clear();
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+    }
+
+    //功能函数
+    function setting()
+    {
+        loadFullScreen();
+        loadAutoScreen(camera, renderer);
+        loadStats();
+    }
+
+    //运行主函数
+    function Start()
+    {
+        initThree();
+        initObject();
+        setting();
+        render();
+    }
+</script>
+</body>
+</html>

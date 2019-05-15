@@ -2,22 +2,79 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="icon" href="../../logo.ico">
     <title>Solar System Demo</title>
     <script src="../../import/three.js"></script>
     <script src="../../import/stats.js"></script>
     <script src="../../import/Setting.js"></script>
     <script src="../../import/OrbitControls.js"></script>
     <style type="text/css">
-        div#canvas-frame {
+        body {
             border: none;
             cursor: pointer;
             width: 100%;
-            height: 800px;
+            height: 1000px;
+            /*全屏显示的设置*/
+            margin: 0;
+            overflow: hidden;/*消除浏览器的滚动条*/
+
+        }
+        /*加载动画*/
+        #loading {
+            width: 100%;
+            height: 850px;
             background-color: #333333;
+        }
+        #spinner {
+            width: 100px;
+            height: 100px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+        }
+        .double-bounce1, .double-bounce2 {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #67CF22;
+            opacity: 0.6;
+            position: absolute;
+            top: 0;
+            left: 0;
+            -webkit-animation: bounce 2.0s infinite ease-in-out;
+            animation: bounce 2.0s infinite ease-in-out;
+        }
+
+        .double-bounce2 {
+            -webkit-animation-delay: -1.0s;
+            animation-delay: -1.0s;
+        }
+
+        @-webkit-keyframes bounce {
+            0%, 100% { -webkit-transform: scale(0.0) }
+            50% { -webkit-transform: scale(1.0) }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: scale(0.0);
+                -webkit-transform: scale(0.0);
+            } 50% {
+                  transform: scale(1.0);
+                  -webkit-transform: scale(1.0);
+              }
         }
     </style>
 </head>
 <body onload="threeStart()">
+<!--加载动画的div-->
+<div id="loading">
+    <div id="spinner">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
 <script>
     let renderer;
     let camera;
@@ -26,9 +83,8 @@
             antialias : true
         });
         renderer.setSize(window.innerWidth, window.innerHeight);//设置渲染的宽度和高度
-        document.getElementById("canvas-frame").appendChild(renderer.domElement);
+        document.body.appendChild(renderer.domElement);
         renderer.setClearColor(0x333333, 1.0);
-
     }
     function initCamera() {
         camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 1, 10000);
@@ -81,7 +137,7 @@
         scene.add(jinxing);
 
         geometry = new THREE.SphereGeometry(30, 50, 50);
-         texture = THREE.ImageUtils.loadTexture("image/earth.jpg");
+        texture = THREE.ImageUtils.loadTexture("image/earth.jpg");
         material = new THREE.MeshBasicMaterial({map:texture});
         earth = new THREE.Mesh(geometry,material);
         earth.position.set(0,0,300);//6
@@ -175,7 +231,14 @@
                 scene.add(cycleMesh);
             }
             }
+        loaded();
     }
+
+    function loaded()
+    {
+        document.getElementById('loading').style.display = 'none';
+    }
+
     //每个星球的自转函数
     function zizhuan() {
         sun.rotation.y = sun.rotation.y+0.008>=2*Math.PI?0:sun.rotation.y+0.008;

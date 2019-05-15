@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="icon" href="../../logo.ico">
     <title>Naval Craft Sprite</title>
     <script src="../../import/three.js"></script>
     <script src="../../import/stats.js"></script>
@@ -10,17 +12,70 @@
     <script src="../../import/tween.min.js"></script>
     <script src="../../import/STLLoader.js"></script>
     <style type="text/css">
-        div#WebGL-output {
+        body {
             border: none;
             cursor: pointer;
+            width: 100%;
+            height: 1000px;
+            /*全屏显示的设置*/
+            margin: 0;
+            overflow: hidden;/*消除浏览器的滚动条*/
+        }
+        /*加载动画*/
+        #loading {
             width: 100%;
             height: 850px;
             background-color: #333333;
         }
+        #spinner {
+            width: 100px;
+            height: 100px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+        }
+        .double-bounce1, .double-bounce2 {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #67CF22;
+            opacity: 0.6;
+            position: absolute;
+            top: 0;
+            left: 0;
+            -webkit-animation: bounce 2.0s infinite ease-in-out;
+            animation: bounce 2.0s infinite ease-in-out;
+        }
+
+        .double-bounce2 {
+            -webkit-animation-delay: -1.0s;
+            animation-delay: -1.0s;
+        }
+
+        @-webkit-keyframes bounce {
+            0%, 100% { -webkit-transform: scale(0.0) }
+            50% { -webkit-transform: scale(1.0) }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: scale(0.0);
+                -webkit-transform: scale(0.0);
+            } 50% {
+                  transform: scale(1.0);
+                  -webkit-transform: scale(1.0);
+              }
+        }
     </style>
 </head>
 <body onload="threeStart()">
-<div id="WebGL-output"></div>
+<!--加载动画的div-->
+<div id="loading">
+    <div id="spinner">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
 <script>
     let camera, renderer, scene,controller;
     function initThree() {
@@ -34,7 +89,7 @@
         renderer.setClearColor(0x333333);
         renderer.shadowMapEnabled = true;//开启阴影的渲染
         renderer.shadowMapType = THREE.PCFSoftShadowMap;//设置阴影类型为柔和
-        document.getElementById("WebGL-output").appendChild(renderer.domElement);//将渲染添加到div中
+        document.body.appendChild(renderer.domElement);//将渲染添加到div中
 
         //初始化摄像机，这里使用透视投影摄像机
         camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 10000);
@@ -61,7 +116,7 @@
     function initObject() {
         let loader = new THREE.STLLoader();//创建stl的加载器，用加载器来加载stl模型
         group = new THREE.Object3D();
-        loader.load("../../asset/naval_craft.stl", function (bufferGeometry) {//加载模型的方法，第一个参数是模型的路径，第二个参数时候我们定义的回调函数，一旦模型加载成功，回调函数就会被调用
+        loader.load("asset/naval_craft.stl", function (bufferGeometry) {//加载模型的方法，第一个参数是模型的路径，第二个参数时候我们定义的回调函数，一旦模型加载成功，回调函数就会被调用
             let geometry = new THREE.Geometry().fromBufferGeometry(bufferGeometry);//stl模型加载到js里就会变成bufferGeometry类型，我们先用一个方法把它变成Geometry类型
             loadGeometry = geometry.clone();//创建该geometry的克隆体，后面会用到
             let material = new THREE.PointsMaterial({//点云的材质
@@ -110,6 +165,7 @@
             tween.start();//开启tween
             scene.add(group);
         });
+        document.getElementById('loading').style.display = 'none';
     }
 
     //自定义渐变颜色的画布，前面的文章有介绍，这个方法在写three.js程序很常用

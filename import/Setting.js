@@ -29,7 +29,7 @@ function loadFullScreen() {
     }
 
     function keydownForScreen(ev) {
-        if (ev.keyCode == 112) {
+        if (ev.keyCode == 113) {
             requestFullScreen();
             requestFullScreen('body');
             requestFullScreen('#main');
