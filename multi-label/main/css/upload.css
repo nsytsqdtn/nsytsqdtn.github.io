@@ -1,0 +1,134 @@
+/* CSS Documen t*/
+.upload {
+    width: 100%;
+	height: 87.3%;
+    margin: 0 auto;
+	position: absolute;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+	background: linear-gradient(to bottom, #dbd8d1, #9b6126);
+}
+.inputtitle {
+	width: 100%;
+	height: 40px;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+  }
+.inputtext {
+width: 800px;
+height: 300px;
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 4px;
+}
+.button-container {
+	position: relative;
+	float: left;
+	margin-left: 100px;
+}
+.classifier {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 80px;
+	height: 40px;
+	background-color: #e6970e;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+.text-box {
+	float: left;
+	width: 200px;
+	height: 80px;
+	margin-left: 20px;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 14px;
+	line-height: 1.5;
+}
+textarea {
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+	font-family: Arial, sans-serif;
+	font-size: 16px;
+	padding: 10px;
+	transition: all 0.3s ease-in-out;
+  }
+.text-box {
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+	font-family: Arial, sans-serif;
+	font-size: 16px;
+	padding: 10px;
+	transition: all 0.3s ease-in-out;
+}
+input:focus {
+border-color: #6CB8F6;
+box-shadow: 2px 2px 5px rgba(108, 184, 246, 0.5);
+outline: none;
+}
+
+
+.con {
+	width: 100%;
+	height: 87.3%;
+	margin: 0 auto;
+	padding: 20px;
+	background: linear-gradient(to bottom, #dbd8d1, #9b6126);
+	border: 1px solid #ddd;
+	position: relative;
+	text-align: center; /* 居中对齐 */
+  }
+.button-group {
+	display: flex;
+	gap: 10px;
+	margin-bottom: 10px;
+	margin-left: 350px;
+}
+.delete-btn, .modify-btn {
+background-color: orange;
+color: white;
+padding: 2px 2px;
+border: none;
+border-radius: 5px;
+margin-bottom: 20px;
+}
+.delete-btn {
+	margin-right: 400px;
+	margin-left: 100px;
+}
+.article {
+	width: 50%;
+	height: 80%;
+}
+.item {
+	height: 35px;
+	width: 100%;
+	box-sizing: border-box;
+	color: #333; /* 改变字体颜色 */
+	background-color: #fff; /* 改变背景颜色 */
+	border: 1px solid #ccc; /* 添加边框 */
+	padding: 5px; /* 添加内边距 */
+	font-size: 14px; /* 改变字体大小 */
+}
+
+@media (min-width: 768px) {
+.con {
+	flex-direction: row;
+	justify-content: center;
+	}
+
+.button-group {
+	margin-right: 20px;
+	margin-bottom: 0;
+	}
+}

@@ -1,0 +1,141 @@
+/* 整个页面的样式 */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* 爬虫模块的样式 */
+.pachong {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
+
+.pachong form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.pachong label {
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.pachong input[type="text"] {
+  font-size: 18px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.pachong button[type="button"] {
+  font-size: 18px;
+  padding: 5px 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: #ffa200;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.pachong button[type="button"]:hover {
+  background-color: #ffa200;
+}
+
+.con {
+  margin: 30px auto;
+  width: 80%;
+  max-width: 1200px;
+  background: linear-gradient(to bottom, #dbd8d1, #9b6126);
+}
+
+.con table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.con th {
+  background-color: #ffa200;
+  color: #fff;
+  padding: 10px;
+  font-weight: bold;
+  border: 1px solid #ddd;
+}
+
+.con td {
+  color: #000000;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.con td a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.con td a:hover {
+  text-decoration: underline;
+}
+
+.con button {
+  font-size: 18px;
+  padding: 5px 15px;
+  border-radius: 5px;
+  border: none;
+  background-color: #ffa200;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: block;
+  margin: 30px auto;
+}
+
+.con button:hover {
+  background-color: #ffa200;
+}
+
+
+.progress-container {
+  width: 50%;
+  margin: 0 auto;
+  background-color: #ddd;
+  justify-content: center;
+}
+
+.progress-bar {
+  height: 20px;
+  background-color: #ffa200;
+  width: 0%;
+  transition: width 0.5s ease-in-out;
+}
+
+
+.pagination {
+  display: inline-block;
+  text-align: center;
+  margin: 10px 400px;
+}
+
+.pagination a {
+  color: #000;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-right: 5px;
+}
+
+.pagination a.active {
+  background-color: #ffa200;
+  color: white;
+  border-color: #ffa200;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}

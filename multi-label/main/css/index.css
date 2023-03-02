@@ -1,0 +1,126 @@
+.data-module {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  padding: 20px;
+  margin-top: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.data-box {
+  width: 200px;
+  height: 120px;
+  margin: 10px;
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.data-box h3 {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.data-value {
+  font-size: 36px;
+  font-weight: bold;
+  color: #f29f06;
+}
+
+.data-box:hover {
+  background-color: #e6e6e6;
+}
+
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.pie {
+  flex: 1;
+}
+
+.pie {
+  padding-left: 320px;
+  padding-top: 20px;
+  width: 300px;
+  height: 300px;
+  position: relative;
+}
+
+.pie .sector {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: all .3s ease-in;
+}
+
+.pie .sector:hover {
+  transform: scale(1.1);
+}
+
+.pie .title {
+  display: none;
+}
+
+.pie .sector:hover + .title {
+  position: absolute;
+  top: 30%;
+  left: 70%;
+  width: 120px;
+  transform: translateY(-50%);
+  display: block;
+  font-size: 25px;
+  color: #f29f06;
+  font-weight: bold;
+}
+
+.pie2 {
+  padding-right: 0px;
+  padding-top: 20px;
+  width: 300px;
+  height: 300px;
+  position: relative;
+}
+.pie2 .sector2 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: all .3s ease-in;
+}
+
+.pie2 .sector2:hover {
+  transform: scale(1.1);
+}
+
+.pie2 .title2 {
+  display: none;
+}
+
+.pie2 .sector2:hover + .title2 {
+  position: absolute;
+  top: 30%;
+  left: 70%;
+  width: 120px;
+  transform: translateY(-50%);
+  display: block;
+  font-size: 25px;
+  color: #f29f06;
+  font-weight: bold;
+}
+
+.pie2 {
+  flex: 1;
+}
+
+.ptitle{
+  font-size: 25px;
+  font-weight: bold;
+}

@@ -1,0 +1,147 @@
+﻿<!doctype html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8" lang="">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9" lang="">
+<![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="zxx">
+<!--<![endif]-->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--====== USEFULL META ======-->
+<!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<![endif]-->
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--====== TITLE TAG ======-->
+<title>Home</title>
+<link rel="shortcut icon" type="image/ico" href="images/favicon.png" />
+<!--====== STYLESHEETS ======-->
+<link rel="stylesheet" href="css/font-awesome-min.css">
+<link rel="stylesheet" href="css/bootstrap-min.css">
+<link rel="stylesheet" href="css/normalize.css">
+<link rel="stylesheet" href="css/animate.css">
+<link rel="stylesheet" href="css/lity.css">
+<link rel="stylesheet" href="css/slick-nav.css">
+<link rel="stylesheet" href="css/slick-slider.css">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/upload.css">
+<!--====== MAIN STYLESHEET ======-->
+<link href="style.css" rel="stylesheet">
+<link href="css/responsive.css" rel="stylesheet">
+<script src="js/vendor/modernizr.js"></script>
+<!--[if lt IE 9]>
+<script src="/oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="/oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body data-spy="scroll" data-target=".mainmenu-area" data-offset="50">
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<!-- Page cursor -->
+<div class='cursor' id="cursor"></div>
+<div class='cursor2' id="cursor2"></div>
+<div class='cursor3' id="cursor3"></div>
+<!-- Preloader-Content -->
+<div class="preloader">
+	<img src="images/preloader.gif" alt="preloader">
+</div>
+
+<!-- Full-Wrapper-Start -->
+<div class="full-wrapper">
+	
+	<!-- Mainmenu-Area-Start -->
+	<div class="mainmenu-area" data-spy="affix" data-offset-top="205">
+		<div class="mainmenu-row container">
+			<!-- Site-Logo-Start -->
+			<div class="site-logo">
+				<!-- Text-Logo-Markup -->
+				<h2 class="logo-text"><a href="#">添加文章</a></h2>
+				<!-- Image-Logo-Markup -->
+				<!-- <a href="#" class="logo-image">
+			  <img src="logo.png" alt="">
+			  </a> -->
+			</div>
+			<!-- Site-Logo-End -->
+			<div class="menu-right">
+				<!-- Primary-Menu-Start -->
+				<nav class="primary-menu" id="mainmenu">
+					<ul class="navbar-nav">
+						<li class="menu-home"><a class="nav-link" href="https:///nsytsqdtn.github.io/multi-label/main/index.html">数据统计</a></li>
+						<li><a class="nav-link" href="https:///nsytsqdtn.github.io/multi-label/main/add.html">添加文章</a></li>
+						<li><a class="nav-link" href="https:///nsytsqdtn.github.io/multi-label/main/console.html">管理文章</a></li>
+						<li><a class="nav-link" href="https:///nsytsqdtn.github.io/multi-label/main/data.html">爬取数据</a></li>
+						</li>
+					</ul>
+				</nav>
+				<!-- Primary-Menu-End -->
+				<!-- Search-Form-Tigger-Button -->
+				
+				<!-- Mobile-Menu-Tigger-Button -->
+				<div class="toggle-menu">
+					<button type="button" class="navi-trigger">
+			  <span class="bar"></span>
+			  <span class="bar"></span>
+			  <span class="bar"></span>
+			  </button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Mainmenu-Area-End -->
+</div>
+
+<div class="upload">
+	<table>
+	  <tr>
+		<td><textarea class="inputtitle" style="height: 55px;" placeholder="请输入新闻标题"></textarea></td>
+	  </tr>
+	  <tr>
+		<td style="vertical-align: top;"><textarea class="inputtext" placeholder="请输入新闻内容"></textarea></td>
+	  </tr>
+	</table>
+	<div class="button-container">
+	  <button class="classifier">分类</button>
+	</div>
+	<div class="text-box"></div>
+	</div>
+</div>
+<script>
+	// 获取按钮和显示框元素
+	const button = document.querySelector('.classifier');
+	const display = document.querySelector('.text-box');
+
+	// 为按钮添加点击事件监听器
+	button.addEventListener('click', function() {
+	  // 更新显示框的文本内容
+	  display.textContent = '游戏，娱乐，人工智能，手机';
+	});
+</script>
+
+<!-- Full-Wrapper-End -->
+<!--=======  SCRIPTS =======-->
+
+<script src="js/vendor/jquery-min.js"></script>
+<!--=======  PLUGINS =======-->
+<script src="js/popper-min.js"></script>
+<script src="js/bootstrap-min.js"></script>
+<script src="js/lity-min.js"></script>
+<script src="js/slick-slider-min.js"></script>
+<script src="js/slick-nav.js"></script>
+<script src="js/wow-min.js"></script>
+<script src="js/ajaxchimp.js"></script>
+<!--=======  ACTIVE JS =======-->
+<script src="js/script.js"></script>
+</body>
+
+</html>

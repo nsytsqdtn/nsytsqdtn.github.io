@@ -32,6 +32,7 @@
 <link rel="stylesheet" href="css/slick-nav.css">
 <link rel="stylesheet" href="css/slick-slider.css">
 <link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/index.css">
 <!--====== MAIN STYLESHEET ======-->
 <link href="style.css" rel="stylesheet">
 <link href="css/responsive.css" rel="stylesheet">
@@ -55,19 +56,7 @@
 <div class="preloader">
 	<img src="images/preloader.gif" alt="preloader">
 </div>
-<!-- Popup-Search-Form -->
-<div class="toggle-search-form">
-	<form class="toggle-search-field">
-		<button type="button" class="toggle-search-close">
-	 <i class="fal fa-times"></i>
-	 </button>
-		<input type="search" name="s" placeholder="Search here..." value="" class="toggle-search-input">
-		<button type="submit" class="toggle-search-submit">
-	 <i class="fal fa-search"></i>
-	 </button>
-	</form>
-</div>
-<!-- Popup-Search-Form-End -->
+
 <!-- Full-Wrapper-Start -->
 <div class="full-wrapper">
 	
@@ -88,20 +77,16 @@
 				<!-- Primary-Menu-Start -->
 				<nav class="primary-menu" id="mainmenu">
 					<ul class="navbar-nav">
-						<li class="menu-home"><a class="nav-link" href="#home-section">首页</a></li>
-						<li><a class="nav-link" href="#add-section">添加文章</a></li>
-						<li><a class="nav-link" href="#console-section">管理文章</a></li>
-						<li><a class="nav-link" href="#data-section">数据统计</a></li>
+						<li class="menu-home"><a class="nav-link" href="https://nsytsqdtn.github.io/multi-label/main/index.html">数据统计</a></li>
+						<li><a class="nav-link" href="https://nsytsqdtn.github.io/multi-label/main/add.html">添加文章</a></li>
+						<li><a class="nav-link" href="https:///nsytsqdtn.github.io/multi-label/main/console.html">管理文章</a></li>
+						<li><a class="nav-link" href="https:///nsytsqdtn.github.io/multi-label/main/data.html">爬取数据</a></li>
 						</li>
 					</ul>
 				</nav>
 				<!-- Primary-Menu-End -->
 				<!-- Search-Form-Tigger-Button -->
-				<div class="toggle-search">
-					<button type="button" class="toggle-search-button menu-button">
-			  <i class="fal fa-search"></i>
-			  </button>
-				</div>
+				
 				<!-- Mobile-Menu-Tigger-Button -->
 				<div class="toggle-menu">
 					<button type="button" class="navi-trigger">
@@ -113,11 +98,194 @@
 			</div>
 		</div>
 	</div>
-	<!-- Mainmenu-Area-End -->
-
-
-	
 </div>
+  
+<div class="data-module">
+	<div class="data-box">
+	  <h3>今日新闻浏览量</h3>
+	  <p class="data-value">231</p>
+	</div>
+	<div class="data-box">
+	  <h3>在线用户</h3>
+	  <p class="data-value">4</p>
+	</div>
+	<div class="data-box">
+	  <h3>总共的新闻数量</h3>
+	  <p class="data-value">1,023</p>
+	</div>
+	<div class="data-box">
+	  <h3>最新新闻更新时间</h3>
+	  <p class="data-value">24小时前</p>
+	</div>
+</div>
+
+<div class="wrapper">
+	<div id="pie"><a class='ptitle' style="padding-left: 60px;">各类别新闻占比</a></div>
+	<div id="pie2"><a class='ptitle'>用户喜爱的各类别新闻占比</a></div>
+  </div>
+
+
+<script>
+    const data = [
+        {ratio: 0.1358, title: '科技 13.58%'},
+        {ratio: 0.1244, title: '娱乐 12.44%'},
+        {ratio: 0.1066, title: '手机 10.66%'},
+        {ratio: 0.0829, title: '其他 8.29%'},
+        {ratio: 0.0568, title: '高考 5.68%'},
+        {ratio: 0.0474, title: '购物 4.74%'},
+        {ratio: 0.0209, title: '科普 2.09%'},
+        {ratio: 0.4252, title: '社会 42.52%'},
+    ]
+
+
+    function execPoint(cx, cy, r, ratio) {
+        // 计算弧度，一个整圆弧度是 2π
+        const rad = ratio * 2 * Math.PI
+        return {
+            x: cx + Math.sin(rad) * r,
+            y: cy - Math.cos(rad) * r
+        }
+    }
+
+    /**
+     * 构建裁剪路径
+     * @param data 数据
+     * @param width 元素宽度，宽高相同
+     */
+    function buildSectorPaths(data, width) {
+        // 偏转量
+        let offset = 0
+        // 圆心坐标
+        const cx = width / 2
+        const cy = width / 2
+        // 半径
+        const r = width / 2
+        const result = []
+        for (const datum of data) {
+            let path = `M ${cx},${cy}`
+            // 圆弧起点
+            const start = execPoint(cx, cy, r, offset)
+            path += ` L ${start.x},${start.y}`
+            // 圆弧终点
+            offset += datum.ratio
+            const end = execPoint(cx, cy, r, offset)
+            // 圆弧大关圆画大圆，否则画小圆
+            const angle = datum.ratio * 2 * Math.PI
+            path += ` A ${r},${r} 0,${angle > Math.PI ? 1 : 0},1 ${end.x},${end.y}`
+            path += ' Z'
+            result.push(path)
+        }
+        return result
+    }
+
+    function buildPie(containerEl, data) {
+        containerEl.classList.add('pie')
+        const paths = buildSectorPaths(data, 300)
+        for (let i = 0; i < paths.length; i++) {
+            const path = paths[i]
+            const sector = document.createElement('div')
+            sector.classList.add('sector')
+            sector.style.clipPath = `path('${path}')`
+            // 给个随机背景色
+            const r = Math.floor(Math.random() * 255);
+            const g = Math.floor(Math.random() * 255);
+            const b = Math.floor(Math.random() * 255);
+            sector.style.backgroundColor = `rgb(${r},${g},${b})`
+            containerEl.appendChild(sector)
+            // 新增加的标题
+            const title = document.createElement('div')
+            title.classList.add('title')
+            title.innerText = data[i].title
+            containerEl.appendChild(title)
+        }
+    }
+
+    const pie = document.getElementById('pie')
+    buildPie(pie, data)
+</script>  
+ 
+
+<script>
+    const data2 = [
+        {ratio: 0.1951, title: '其他 19.51%'},
+        {ratio: 0.1169, title: '手游 11.69%'},
+        {ratio: 0.1005, title: 'AI 10.05%'},
+        {ratio: 0.1823, title: '偶像剧 18.23%'},
+        {ratio: 0.1068, title: '淘宝 10.68%'},
+        {ratio: 0.0774, title: '美食 7.74%'},
+        {ratio: 0.0609, title: '原神 6.09%'},
+        {ratio: 0.1601, title: '宠物 16.01%'},
+    ]
+
+
+    function execPoint(cx, cy, r, ratio) {
+        // 计算弧度，一个整圆弧度是 2π
+        const rad = ratio * 2 * Math.PI
+        return {
+            x: cx + Math.sin(rad) * r,
+            y: cy - Math.cos(rad) * r
+        }
+    }
+
+    /**
+     * 构建裁剪路径
+     * @param data 数据
+     * @param width 元素宽度，宽高相同
+     */
+    function buildSectorPaths(data, width) {
+        // 偏转量
+        let offset = 0
+        // 圆心坐标
+        const cx = width / 2
+        const cy = width / 2
+        // 半径
+        const r = width / 2
+        const result = []
+        for (const datum of data) {
+            let path = `M ${cx},${cy}`
+            // 圆弧起点
+            const start = execPoint(cx, cy, r, offset)
+            path += ` L ${start.x},${start.y}`
+            // 圆弧终点
+            offset += datum.ratio
+            const end = execPoint(cx, cy, r, offset)
+            // 圆弧大关圆画大圆，否则画小圆
+            const angle = datum.ratio * 2 * Math.PI
+            path += ` A ${r},${r} 0,${angle > Math.PI ? 1 : 0},1 ${end.x},${end.y}`
+            path += ' Z'
+            result.push(path)
+        }
+        return result
+    }
+
+    function buildPie(containerEl, data) {
+        containerEl.classList.add('pie2')
+        const paths = buildSectorPaths(data, 300)
+        for (let i = 0; i < paths.length; i++) {
+            const path = paths[i]
+            const sector = document.createElement('div')
+            sector.classList.add('sector2')
+            sector.style.clipPath = `path('${path}')`
+            // 给个随机背景色
+            const r = Math.floor(Math.random() * 255);
+            const g = Math.floor(Math.random() * 255);
+            const b = Math.floor(Math.random() * 255);
+            sector.style.backgroundColor = `rgb(${r},${g},${b})`
+            containerEl.appendChild(sector)
+            // 新增加的标题
+            const title = document.createElement('div')
+            title.classList.add('title2')
+            title.innerText = data[i].title
+            containerEl.appendChild(title)
+        }
+    }
+
+    const pie2 = document.getElementById('pie2')
+    buildPie(pie2, data2)
+</script>  
+	
+  
+
 <!-- Full-Wrapper-End -->
 <!--=======  SCRIPTS =======-->
 <script src="js/vendor/jquery-min.js"></script>

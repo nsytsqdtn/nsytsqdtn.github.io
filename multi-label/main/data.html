@@ -1,0 +1,217 @@
+﻿<!doctype html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="">
+<![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8" lang="">
+<![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9" lang="">
+<![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="zxx">
+<!--<![endif]-->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--====== USEFULL META ======-->
+<!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<![endif]-->
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--====== TITLE TAG ======-->
+<title>Home</title>
+<link rel="shortcut icon" type="image/ico" href="images/favicon.png" />
+<!--====== STYLESHEETS ======-->
+<link rel="stylesheet" href="css/font-awesome-min.css">
+<link rel="stylesheet" href="css/bootstrap-min.css">
+<link rel="stylesheet" href="css/normalize.css">
+<link rel="stylesheet" href="css/animate.css">
+<link rel="stylesheet" href="css/lity.css">
+<link rel="stylesheet" href="css/slick-nav.css">
+<link rel="stylesheet" href="css/slick-slider.css">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/data.css">
+<!--====== MAIN STYLESHEET ======-->
+<link href="style.css" rel="stylesheet">
+<link href="css/responsive.css" rel="stylesheet">
+<script src="js/vendor/modernizr.js"></script>
+<!--[if lt IE 9]>
+<script src="/oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="/oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body data-spy="scroll" data-target=".mainmenu-area" data-offset="50">
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<!-- Page cursor -->
+<div class='cursor' id="cursor"></div>
+<div class='cursor2' id="cursor2"></div>
+<div class='cursor3' id="cursor3"></div>
+<!-- Preloader-Content -->
+<div class="preloader">
+	<img src="images/preloader.gif" alt="preloader">
+</div>
+
+<!-- Full-Wrapper-Start -->
+<div class="full-wrapper">
+	
+	<!-- Mainmenu-Area-Start -->
+	<div class="mainmenu-area" data-spy="affix" data-offset-top="205">
+		<div class="mainmenu-row container">
+			<!-- Site-Logo-Start -->
+			<div class="site-logo">
+				<!-- Text-Logo-Markup -->
+				<h2 class="logo-text"><a href="#">爬取数据</a></h2>
+				<!-- Image-Logo-Markup -->
+				<!-- <a href="#" class="logo-image">
+			  <img src="logo.png" alt="">
+			  </a> -->
+			</div>
+			<!-- Site-Logo-End -->
+			<div class="menu-right">
+				<!-- Primary-Menu-Start -->
+				<nav class="primary-menu" id="mainmenu">
+					<ul class="navbar-nav">
+						<li class="menu-home"><a class="nav-link" href="https:///nsytsqdtn.github.io/multi-label/main/index.html">首页</a></li>
+						<li><a class="nav-link" href="https:///nsytsqdtn.github.io/multi-label/main/add.html">添加文章</a></li>
+						<li><a class="nav-link" href="https:///nsytsqdtn.github.io/multi-label/main/console.html">管理文章</a></li>
+						<li><a class="nav-link" href="https:///nsytsqdtn.github.io/multi-label/main/data.html">爬取数据</a></li>
+						</li>
+					</ul>
+				</nav>
+				<!-- Primary-Menu-End -->
+				<!-- Search-Form-Tigger-Button -->
+				
+				<!-- Mobile-Menu-Tigger-Button -->
+				<div class="toggle-menu">
+					<button type="button" class="navi-trigger">
+			  <span class="bar"></span>
+			  <span class="bar"></span>
+			  <span class="bar"></span>
+			  </button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Mainmenu-Area-End -->
+</div>
+
+
+
+<div class="pachong">
+	<form>
+		<label for="url">目标网址:</label>
+		<input type="text" id="url" name="url" placeholder="https://ent.sina.com.cn/film/">
+		<button type="button" id="start-btn">爬取并分类</button>
+	</form>
+</div>
+
+<!-- <div class="cont">
+	<div class="progress-barr">
+		<div class="progresss"></div>
+	</div>
+</div> -->
+
+<div class="progress-container">
+	<div class="progress-bar" role="progressbar"></div>
+</div>
+
+<script>
+const progressBar = document.querySelector('.progress-bar');
+const startButton = document.getElementById('start-btn');
+
+startButton.addEventListener('click', () => {
+  let progress = 0;
+  const intervalId = setInterval(() => {
+    progress += 1;
+    progressBar.style.width = `${progress}%`;
+    if (progress >= 100) {
+      clearInterval(intervalId);
+    }
+  }, 500);
+});
+
+</script>
+
+<div class="con">
+	<table>
+	  <thead>
+		<tr>
+		  <th>序号</th>
+		  <th>标题</th>
+		  <th>链接</th>
+		  <th>类别</th>
+		</tr>
+	  </thead>
+	  <tbody>
+		<tr>
+		  <td>1</td>
+		  <td>王源文淇拍立得同框合照曝光 正合作拍摄新电影</td>
+		  <td><a href="#">http://slide.ent.sina.com.cn/film/slide_8_653_142462.html#p=1</a></td>
+		  <td>明星、电影、娱乐、拍照</td>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>宋茜现身《保你平安》路演 听到粉丝提雪莉转身默默落泪</td>
+			<td><a href="#">http://slide.ent.sina.com.cn/film/slide_4_704_382469.html#p=1</a></td>
+			<td>娱乐、明星、电影</td>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>《电影手册》:法国电影市场处于危机时刻</td>
+			<td><a href="#">http://slide.ent.sina.com.cn/film/slide_2_123_656324.html#p=1</a></td>
+			<td>电影、科普、娱乐，法国电影</td>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>湖北当阳农村电影博物馆:用光影记录时代</td>
+			<td><a href="#">http://slide.ent.sina.com.cn/film/slide_2_663_567653.html#p=1</a></td>
+			<td>文化、乡村、电影、历史、科普</td>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>从《流浪地球2》说起:中国电影出海激荡二十年</td>
+			<td><a href="#">http://slide.ent.sina.com.cn/film/slide_2_421_1235436.html#p=1</a></td>
+			<td>电影、历史、文化、娱乐、国产</td>
+		</tr>
+	  </tbody>
+	</table>
+	<div class="pagination">
+		<a href="#">&laquo;</a>
+		<a class="active" href="#">1</a>
+		<a href="#">2</a>
+		<a href="#">3</a>
+		<a href="#">4</a>
+		<a href="#">5</a>
+		<a href="#">6</a>
+		<a href="#">&raquo;</a>
+	</div>
+	<button>录入数据库</button>
+  </div>
+
+  
+
+
+
+
+<!-- Full-Wrapper-End -->
+<!--=======  SCRIPTS =======-->
+<script src="js/vendor/jquery-min.js"></script>
+<!--=======  PLUGINS =======-->
+<script src="js/popper-min.js"></script>
+<script src="js/bootstrap-min.js"></script>
+<script src="js/lity-min.js"></script>
+<script src="js/slick-slider-min.js"></script>
+<script src="js/slick-nav.js"></script>
+<script src="js/wow-min.js"></script>
+<script src="js/ajaxchimp.js"></script>
+<!--=======  ACTIVE JS =======-->
+<script src="js/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+.history__header h2 {
+  text-decoration: underline;
+}
+.history__item {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 0px;
+  height: 60%;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 5px;
+}
+.history{
+  background: linear-gradient(to bottom, #dbd8d1, #9b6126);
+  height: auto;
+}
+.history__header {
+  display: flex;
+  justify-content: center;
+}
+
+.history__item::before {
+  content: "";
+  display: block;
+  height: 0px;
+  background-color: #ccc;
+  margin: 5px 0;
+}
+.history__delete {
+  background-color: #f44336;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  height: 20px;
+  margin-left: 10px;
+  width: 20px;
+}
+
+.history__delete:hover {
+  background-color: #d32f2f;
+}
+
+.history__delete::before {
+  content: "X";
+  display: block;
+  font-weight: bold;
+  line-height: 1;
+  text-align: center;
+  text-shadow: 0 1px 0 #fff;
+}
+.history__pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.history__pagination-btn {
+  background-color: #f5f5f5;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  color: #333;
+  cursor: pointer;
+  font-size: 8px;
+  margin: 0 5px;
+  padding: 5px 10px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.history__pagination-btn:hover {
+  background-color: #eee;
+}
+
+.history__pagination-btn--active {
+  background-color: #4285f4;
+  color: #fff;
+}
+
+.history__pagination-btn--active:hover {
+  background-color: #357ae8;
+}
+.history__title {
+  font-size: 15px;
+}
+.history__time {
+  font-size: 7px;
+}
+.history__title:hover {
+  color: #ff6600;
+}
