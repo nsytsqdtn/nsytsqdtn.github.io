@@ -61,7 +61,7 @@
 
             for (i = 0; i < imgs.length; i++) {
                 myimg = imgs[i];
-                alert(myimg.clientWidth+","+myimg.clientHeight)
+                
                 if (myimg.clientWidth > myimg.clientHeight) {
                     if (myimg.clientWidth > maxwidth) {
                         oldwidth = myimg.clientWidth;
@@ -80,8 +80,11 @@
             }
         }
     img = document.getElementsByClassName("container");
+    var screenWidth = document.body.clientWidth;
+    var screenHeight = document.body.clientHeight;
+    alert(screenWidth+":"+img[0].clientWidth + "," + screenHeight+":"+img[0].clientHeight)
     var maxwidth = 500;
     var maxheight = 200;
-    ResizeImages(maxwidth, maxheight,img);
+    // ResizeImages(maxwidth, maxheight,img);
 </script>
 </html>
