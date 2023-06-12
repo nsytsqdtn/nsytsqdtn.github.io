@@ -1,6 +1,6 @@
 .container {
     position: absolute;
-    margin: 300px auto 0px;
+    margin: 200px auto 0px;
     left: 0;
     right: 0;
     width: 600px;
@@ -8,6 +8,8 @@
     /* position: relative; */
     /* overflow: hidden; */
     display: flex;
+    align-items: Center;
+    justify-content: center;
     border: 6px rgba(255, 255, 255, 0.87) solid;
     box-sizing: border-box;
     box-shadow: 0 0 5px rgba(231, 63, 63, 0.479);
