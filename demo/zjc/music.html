@@ -54,17 +54,34 @@
     <script src="./js/index.js"></script>
 </body>
 <script type="text/javascript">
-    $(function () {
-        var imglist = document.getElementsByClassName("panel");
-        //安卓4.0+等高版本不支持window.screen.width，安卓2.3.3系统支持
-        var _width;
-        doDraw(); window.onresize = function () {//捕捉屏幕窗口变化，始终保证图片根据屏幕宽度合理显示doDraw();
+    function ResizeImages(maxwidth, maxheight, targetDom) {
+            var myimg, oldwidth, oldheight;
+
+            var imgs = targetDom;
+
+            for (i = 0; i < imgs.length; i++) {
+                myimg = imgs[i];
+
+                if (myimg.clientWidth > myimg.clientHeight) {
+                    if (myimg.clientWidth > maxwidth) {
+                        oldwidth = myimg.clientWidth;
+                        myimg.clientHeight = myimg.clientHeight * (maxwidth / oldwidth);
+                        myimg.clientWidth = maxwidth;
+                        myimg.style.cssText = "height:" + myimg.clientHeight * (maxwidth / oldwidth) + "px;width:" + maxwidth + "px";
+                    }
+                } else {
+                    if (myimg.clientHeight > maxheight) {
+                        oldheight = myimg.clientHeight;
+                        myimg.clientWidth = myimg.clientWidth * (maxheight / oldheight);
+                        myimg.clientHeight = maxheight;
+                        myimg.style.cssText = "height:" + maxheight + "px;width:" + myimg.clientWidth * (maxheight / oldheight) + "px";
+                    }
+                }
+            }
         }
-        function doDraw() {
-            _width = window.innerWidth; for (var i = 0, len = imglist.length; i < len; i++) { DrawImage(imglist[i], _width); }
-        } function DrawImage(ImgD, _width) { var image = new Image(); image.src = ImgD.src; image.onload = function () {
-            if(image.width>30 && image.height>30)
-            { if(image.width>_width){ImgD.width=_width; ImgD.height=(image.height*_width)/image.width; }
-            else{ ImgD.width=image.width; ImgD.height=image.height; } }	}}})
+    img = document.getElementsByClassName("panel");
+    var maxwidth = 600;
+    var maxheight = 350;
+    ResizeImages(maxwidth, maxheight,img);
 </script>
 </html>
