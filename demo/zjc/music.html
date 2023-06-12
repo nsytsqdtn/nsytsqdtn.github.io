@@ -61,7 +61,7 @@
 
             for (i = 0; i < imgs.length; i++) {
                 myimg = imgs[i];
-
+                alert(myimg.clientWidth)
                 if (myimg.clientWidth > myimg.clientHeight) {
                     if (myimg.clientWidth > maxwidth) {
                         oldwidth = myimg.clientWidth;
@@ -80,8 +80,8 @@
             }
         }
     img = document.getElementsByClassName("container");
-    var maxwidth = 320;
-    var maxheight = 185;
+    var maxwidth = 600;
+    var maxheight = 350;
     ResizeImages(maxwidth, maxheight,img);
 </script>
 </html>
