@@ -2,7 +2,8 @@
  var pans = document.querySelectorAll(".panel");
  var cont = document.querySelector(".container");
  var ps = cont.querySelectorAll("div p");
-
+var texts = document.getElementsByClassName("text");
+ console.log(texts)
  var hadopen = pans[0];
  var i;
  length = pans.length;
@@ -20,16 +21,40 @@
          n = this.index;
          cutSing();
          Sing();
-
+         for (i = 0; i < length; i++) {
+             if (i != n)
+             {
+                 texts[i].style.display = "none";
+             }
+             else {
+                 texts[i].style.display = "block";
+             }
+             
+         }  
      } 
      else {
          if(this.index != n){
          n = this.index;
          cutSing();
-         Sing();
+             Sing();
+             for (i = 0; i < length; i++) {
+             if (i != n)
+             {
+                 texts[i].style.display = "none";
+             }
+             else {
+                 texts[i].style.display = "block";
+             }  
+         }
          }
          else
-         stop()
+         {
+             stop()
+             for (i = 0; i < length; i++) {
+                 texts[i].style.display = "none";
+            }
+        }
+         
      } 
  }
 
@@ -242,9 +267,11 @@
      play_next.addEventListener("click", () => {
          pans[n].classList.remove("change");
          pans[n].style.animation = "";
+         texts[n].style.display = "none";
          n++;
          if (n == length)
              n = 0;
+         texts[n].style.display = "block";
          pans[n].classList.toggle("change");
          cutSing();
          Sing();
@@ -253,9 +280,11 @@
      play_prev.addEventListener("click", () => {
          pans[n].classList.remove("change");
          pans[n].style.animation = "";
+         texts[n].style.display = "none";
          n--;
          if (n == -1)
              n = length - 1;
+         texts[n].style.display = "block";
          pans[n].classList.toggle("change");
          cutSing();
          Sing();
