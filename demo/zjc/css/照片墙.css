@@ -3,8 +3,10 @@
     margin: 200px auto 0px;
     left: 0;
     right: 0;
-    width: 50%;
-    height: 400px;
+    width: 600px;
+    height: 350px;
+    /* position: relative; */
+    /* overflow: hidden; */
     display: flex;
     border: 6px rgba(255, 255, 255, 0.87) solid;
     box-sizing: border-box;
@@ -51,6 +53,12 @@ p:first-child {
     background: url(../img/1.jpg)no-repeat 45%/cover;
     color: rgb(247, 92, 247);
     text-shadow: 3px 3px 1px rgba(255, 255, 255);
+    max-width: 100%;
+    /* left:0;
+    top:0;
+    right:0;
+    bottom:0; */
+    /* margin: auto; */
 }
 
 .pan2 {

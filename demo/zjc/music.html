@@ -4,13 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <meta name="apple-touch-fullscreen" content="yes" />
-    <script src="js/rem.js"></script>
-    <meta name="next-head-count" content="5" />
     <link rel="stylesheet" href="./css/照片墙.css">
     <link rel="stylesheet" href="./css/播放器.css">
     <link rel="stylesheet" href="./font/font_3507942_qfvv8ocmrxb/iconfont.css">
@@ -58,5 +53,18 @@
     </div>
     <script src="./js/index.js"></script>
 </body>
-
+<script type="text/javascript">
+    $(function () {
+        var imglist = document.getElementsByClassName("panel");
+        //安卓4.0+等高版本不支持window.screen.width，安卓2.3.3系统支持
+        var _width;
+        doDraw(); window.onresize = function () {//捕捉屏幕窗口变化，始终保证图片根据屏幕宽度合理显示doDraw();
+        }
+        function doDraw() {
+            _width = window.innerWidth; for (var i = 0, len = imglist.length; i < len; i++) { DrawImage(imglist[i], _width); }
+        } function DrawImage(ImgD, _width) { var image = new Image(); image.src = ImgD.src; image.onload = function () {
+            if(image.width>30 && image.height>30)
+            { if(image.width>_width){ImgD.width=_width; ImgD.height=(image.height*_width)/image.width; }
+            else{ ImgD.width=image.width; ImgD.height=image.height; } }	}}})
+</script>
 </html>
