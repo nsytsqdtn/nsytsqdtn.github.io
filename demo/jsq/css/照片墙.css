@@ -126,7 +126,7 @@
 .p1 {
     align-self: center;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    bottom:10%;
+    bottom:0;
     position:absolute;
         font-size: 35px;
     font-weight: bold;
@@ -137,7 +137,7 @@
 .p2 {
     align-self: center;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    bottom: 10%;
+    bottom: 0;
         position: absolute;
     font-size: 35px;
     font-weight: bold;
@@ -148,7 +148,7 @@
 .p3 {
     align-self: center;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    bottom: 10%;
+    bottom: 0;
         position: absolute;
         font-size: 35px;
     font-weight: bold;
@@ -159,7 +159,7 @@
 .p4 {
     align-self: center;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    bottom: 10%;
+    bottom: 0;
         position: absolute;
         font-size: 35px;
     font-weight: bold;
