@@ -1,0 +1,37 @@
+{
+  "id": "3507942",
+  "name": "2",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "688097",
+      "name": "上一首 上一个",
+      "font_class": "shangyishoushangyige",
+      "unicode": "e78a",
+      "unicode_decimal": 59274
+    },
+    {
+      "icon_id": "688128",
+      "name": "下一个 下一首",
+      "font_class": "xiayigexiayishou",
+      "unicode": "e7a5",
+      "unicode_decimal": 59301
+    },
+    {
+      "icon_id": "7594047",
+      "name": "24gl-pause2",
+      "font_class": "24gl-pause2",
+      "unicode": "ea6d",
+      "unicode_decimal": 60013
+    },
+    {
+      "icon_id": "7594048",
+      "name": "24gl-play",
+      "font_class": "24gl-play",
+      "unicode": "ea6e",
+      "unicode_decimal": 60014
+    }
+  ]
+}
