@@ -4,9 +4,9 @@
     left: 0;
     right: 0;
     width: 600px;
-    height: 350px;
+    height: 100%;
     /* position: relative; */
-    overflow: hidden;
+    /* overflow: hidden; */
     display: flex;
     border: 6px rgba(255, 255, 255, 0.87) solid;
     box-sizing: border-box;
