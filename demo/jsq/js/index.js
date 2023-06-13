@@ -111,10 +111,10 @@ var texts = document.getElementsByClassName("text");
  ];
 
  var sings = [
-     "./mp3/送别.mp4",
-     "./mp3/听我说谢谢你.mp4",
-     "./mp3/我相信.mp4",
-     "./mp3/明天会更好.mp4",
+     "./mp3/送别.mp3",
+     "./mp3/听我说谢谢你.mp3",
+     "./mp3/我相信.mp3",
+     "./mp3/明天会更好.mp3",
  ]
 
  var bgs = [
