@@ -96,23 +96,23 @@ var texts = document.getElementsByClassName("text");
      tracktime = document.querySelector('.track-time'),
      but = document.querySelectorAll(".control div");
 
- var snames = [
-     "送别",
+var snames = [
      "听我说谢谢你",
+     "送别",
      "我相信",
      "明天会更好",
  ];
 
- var sns = [
-     "送别",
+var sns = [
      "听我说谢谢你",
+     "送别",
      "我相信",
      "明天会更好",
  ];
 
- var sings = [
-     "./mp3/送别.mp3",
+var sings = [
      "./mp3/听我说谢谢你.mp3",
+     "./mp3/送别.mp3",
      "./mp3/我相信.mp3",
      "./mp3/明天会更好.mp3",
  ]
