@@ -96,6 +96,7 @@
 
 
 .p1 {
+    margin: 0 auto;
     align-self: center;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     bottom:0;
@@ -107,6 +108,7 @@
 }
 
 .p2 {
+    margin: 0 auto;
     align-self: center;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     bottom: 0;
@@ -118,6 +120,7 @@
 }
 
 .p3 {
+    margin: 0 auto;
     align-self: center;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     bottom: 0;
@@ -129,6 +132,7 @@
 }
 
 .p4 {
+    margin: 0 auto;
     align-self: center;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     bottom: 0;
