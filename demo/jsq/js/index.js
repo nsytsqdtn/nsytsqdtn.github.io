@@ -3,7 +3,6 @@
  var cont = document.querySelector(".container");
  var ps = cont.querySelectorAll("div p");
 var texts = document.getElementsByClassName("text");
- console.log(texts)
  var hadopen = pans[0];
  var i;
  length = pans.length;
@@ -98,43 +97,31 @@ var texts = document.getElementsByClassName("text");
      but = document.querySelectorAll(".control div");
 
  var snames = [
-     "句号",
-     "传闻",
-     "不能说的秘密",
-     "走马",
-     "永不失联的爱",
-     "Blueming",
-     "Lemon"
+     "送别",
+     "听我说谢谢你",
+     "我相信",
+     "明天会更好",
  ];
 
  var sns = [
-     "邓紫棋-句号",
-     "周柏豪-传闻",
-     "周杰伦-不能说的秘密",
-     "刘宇宁-走马",
-     "单依纯-永不失联的爱",
-     "iu-Blueming",
-     "米津玄师-Lemon"
+     "送别",
+     "听我说谢谢你",
+     "我相信",
+     "明天会更好",
  ];
 
  var sings = [
-     "./mp3/邓紫棋 - 句号.mp3",
-     "./mp3/周柏豪 - 传闻.mp3",
-     "./mp3/周杰伦 - 不能说的秘密.mp3",
-     "./mp3/走马（Cover 陈粒） - 摩登兄弟.mp3",
-     "./mp3/单依纯-永不失联的爱.mp3",
-     "./mp3/IU - Blueming.mp3",
-     "./mp3/Lemon - 米津玄師.mp3"
+     "./mp3/送别.mp4",
+     "./mp3/听我说谢谢你.mp4",
+     "./mp3/我相信.mp4",
+     "./mp3/明天会更好.mp4",
  ]
 
  var bgs = [
-     "./img/0.jpeg",
-     "./img/1.jpeg",
-     "./img/2.jpeg",
-     "./img/3.jpeg",
-     "./img/4.jpeg",
-     "./img/5.webp",
-     "./img/6.jpeg"
+     "./img/1.jpg",
+     "./img/2.jpg",
+     "./img/3.jpg",
+     "./img/4.jpg",
  ]
 
  var progress_t,
@@ -252,7 +239,10 @@ var texts = document.getElementsByClassName("text");
  }
 
 //  function main() {
-
+    audio.onloadedmetadata = function() {
+        console.log(audio.duration)
+};
+    
      play_pause.addEventListener("click", () => {
          pans[n].classList.toggle("change");
          if (audio.paused) {
